@@ -1,0 +1,15 @@
+<section>
+  <form [formGroup]="form" (ngSubmit)="submitProcess()" >
+    <label>
+      Username
+      <input type="text" formControlName="username">
+    </label>
+    <label>
+      Password
+      <input type="password" formControlName="password">
+    </label>
+    <button type="submit">
+      SIGN IN
+    </button>
+  </form>
+</section>
