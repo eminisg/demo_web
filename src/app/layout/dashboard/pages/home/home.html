@@ -1,0 +1,22 @@
+@if (user.hasValue()) {
+
+  @let currentUser = user.value();
+
+  <p>{{currentUser?.username}}</p>
+  <p>{{currentUser?.id}}</p>
+  <p>{{currentUser?.role}}</p>
+}
+
+@if (userListPageable.hasValue()) {
+  <input type="file" accept="image/*" (change)="uploadFileProcess($event)">
+  @let userList = userListPageable.value()?.content;
+  <ul>
+    @for (user of userList; track user.id) {
+      <li>
+        <p>{{user.username}}</p>
+        <p>{{user.id}}</p>
+        <p>{{user.role}}</p>
+      </li>
+    }
+  </ul>
+}
