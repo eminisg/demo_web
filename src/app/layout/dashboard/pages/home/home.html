@@ -1,21 +1,12 @@
-@if (user.hasValue()) {
-
-  @let currentUser = user.value();
-
-  <p>{{currentUser?.username}}</p>
-  <p>{{currentUser?.id}}</p>
-  <p>{{currentUser?.role}}</p>
-}
-
 @if (userListPageable.hasValue()) {
-  <input type="file" accept="image/*" (change)="uploadFileProcess($event)">
   @let userList = userListPageable.value()?.content;
-  <ul>
+  <ul class="list-unstyled my-3">
     @for (user of userList; track user.id) {
-      <li>
-        <p>{{user.username}}</p>
-        <p>{{user.id}}</p>
-        <p>{{user.role}}</p>
+      <li class="shadow p-3 rounded-4 mb-3">
+        <div class="d-flex">
+          <app-img-loc [imgData]="user.profileImg" ></app-img-loc>
+          <span class="ms-2">{{user.username}}</span>
+        </div>
       </li>
     }
   </ul>

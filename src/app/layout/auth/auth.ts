@@ -6,7 +6,11 @@ import {RouterOutlet} from '@angular/router';
   imports: [
     RouterOutlet
   ],
-  template: '<router-outlet></router-outlet>',
+  template: `
+  <section class="container-sm">
+    <router-outlet></router-outlet>
+  </section>
+  `,
   styleUrl: './auth.scss',
 })
 export class Auth {

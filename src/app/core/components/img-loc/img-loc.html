@@ -1,0 +1,6 @@
+@let imageData = imgData();
+<div class="bg-transparent border-0 rounded-circle position-relative overflow-hidden profile-wrapper d-flex">
+    <img [ngSrc]="imageData ? (environment.apiRoot + '/upload/' + imageData.filename) : 'assets/icons/person-circle.svg'"
+         alt="image" fill>
+    <ng-content select="input"></ng-content>
+</div>

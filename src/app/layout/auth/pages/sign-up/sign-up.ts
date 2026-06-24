@@ -24,6 +24,7 @@ export class SignUp {
 
   form = new FormGroup({
     username: new FormControl('Qwerty', [Validators.required]),
+    email: new FormControl('qwerty@gmail.com', [Validators.required, Validators.email]),
     password: new FormControl('123456789', [Validators.required]),
   })
 

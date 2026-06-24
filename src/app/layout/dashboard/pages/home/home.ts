@@ -1,37 +1,28 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {UserService} from '../../../../core/user.service';
 import {HttpResourceRef} from '@angular/common/http';
 import {PageableInterface} from '../../../../core/interfaces/pageable.interface';
 import {UserInterface} from '../../../../core/interfaces/user.interface';
+import {ImgLoc} from '../../../../core/components/img-loc/img-loc';
+import {StoreService} from '../../../../core/store.service';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [
+    ImgLoc
+  ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home {
-
-  constructor() {
-    this.userListPageable.reload();
-  }
-
+export class Home implements OnInit {
   private userService = inject(UserService);
   userListPageable: HttpResourceRef<PageableInterface<UserInterface> | undefined> = this.userService.userListResource;
-  user: HttpResourceRef<UserInterface | undefined> = this.userService.userResource;
+  private readonly storeService = inject(StoreService);
 
-  uploadFileProcess(ev: any) {
-    const file = ev.target.files[0];
+  constructor() {
+  }
 
-    if(!file) return;
-
-    const f = new FormData();
-
-    f.append('file', file);
-
-
-    this.userService.uploadFile(f).subscribe(res => {
-      console.log(res);
-    });
+  ngOnInit() {
+    this.userListPageable.reload();
   }
 }
