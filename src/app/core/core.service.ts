@@ -6,6 +6,7 @@ import {environment} from '../../environments/environment';
 
 const URLS = {
   upload: `${environment.apiRoot}/file/upload-file`,
+  uploads: `${environment.apiRoot}/file/upload-files`,
 }
 
 @Injectable({
@@ -16,6 +17,10 @@ export class CoreService {
 
   uploadFile(formData: FormData) {
     return this.httpClient.post(URLS.upload, formData);
+  }
+
+  uploadFiles(formData: FormData) {
+    return this.httpClient.post(URLS.uploads, formData);
   }
 
 }

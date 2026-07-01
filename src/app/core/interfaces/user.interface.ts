@@ -4,7 +4,7 @@ export interface UserInterface {
   "username": String,
   "email": String,
   "id": number,
-  "role": "USER" | "ADMIN",
+  "roles": "CUSTOMER" | "ADMIN" | "SELLER",
   profileImg: ImageInterface
 }
 

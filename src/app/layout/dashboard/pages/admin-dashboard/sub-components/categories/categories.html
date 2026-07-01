@@ -1,0 +1,22 @@
+<section>
+  <form [formGroup]="form" (ngSubmit)="submitForm()" class="form flex-column d-flex card-body">
+    <label>
+      Category Name
+      <input formControlName="name" type="text" class="form-control">
+    </label>
+    <button type="submit" class="btn btn-primary mt-3">SUBMIT</button>
+  </form>
+
+  @if (categories.hasValue()) {
+    @let categoryList = categories.value().content;
+
+    <div class="my-3">
+      @for (category of categoryList; track category.id) {
+        <small class="badge bg-primary me-2">
+          {{category.name}}
+        </small>
+      }
+    </div>
+  }
+
+</section>

@@ -29,7 +29,7 @@ export class SignIn {
   submitProcess() {
     this.authService.postSignIn(this.form.value).subscribe(res => {
       if(res.token) {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/profile']);
       }
     })
   }

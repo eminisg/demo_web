@@ -15,6 +15,8 @@ import {Router, RouterLink} from '@angular/router';
 })
 export class SignUp {
 
+  private userType: string[] = [];
+
   constructor() {
     sessionStorage.clear();
   }
@@ -29,10 +31,28 @@ export class SignUp {
   })
 
   submitProcess() {
-    this.authService.postSignUp(this.form.value).subscribe(res => {
-      if(res.token) {
-        this.router.navigate(['/dashboard']);
+
+    const body: any = this.form.value;
+
+    body.roles = this.userType;
+
+
+    this.authService.postSignUp(body).subscribe(res => {
+      if (res.token) {
+        this.router.navigate(['/profile']);
       }
     })
+  }
+
+  selectUserType(ev: any) {
+    const type = ev.target.value;
+
+    if (ev.target.checked) {
+      if (!this.userType.includes(type)) {
+        this.userType.push(type);
+      }
+    } else {
+      this.userType = this.userType.filter(item => item !== type);
+    }
   }
 }

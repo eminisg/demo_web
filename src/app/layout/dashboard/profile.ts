@@ -10,9 +10,9 @@ import {Footer} from '../../core/components/footer/footer';
     Header,
     Footer,
   ],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss',
+  templateUrl: './profile.html',
+  styleUrl: './profile.scss',
 })
-export class Dashboard {
+export class Profile {
 
 }

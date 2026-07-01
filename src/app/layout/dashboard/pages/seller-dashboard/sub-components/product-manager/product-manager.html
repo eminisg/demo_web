@@ -1,0 +1,159 @@
+<section>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submitForm()"
+    class="form d-flex flex-column card-body">
+
+    <label class="mb-3">
+      Product Name
+      <input
+        type="text"
+        class="form-control"
+        formControlName="name">
+    </label>
+
+    <label class="mb-3">
+      Description
+      <textarea
+        class="form-control"
+        rows="5"
+        formControlName="description">
+      </textarea>
+    </label>
+
+    <label class="mb-3">
+      Price
+      <input
+        type="number"
+        class="form-control"
+        formControlName="price">
+    </label>
+
+    <label class="mb-3">
+      Stock Quantity
+      <input
+        type="number"
+        class="form-control"
+        formControlName="stockQuantity">
+    </label>
+
+    @if (categories.hasValue()) {
+
+      <label class="mb-3">
+        Category
+
+        <select
+          class="form-control"
+          formControlName="category">
+          <option [ngValue]="null">Select Category...</option>
+
+          @for (category of categories.value().content; track category.id) {
+            <option [ngValue]="category">
+              {{ category.name }}
+            </option>
+
+          }
+
+        </select>
+
+      </label>
+
+    }
+
+    <label class="mb-3">
+      Images
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        (change)="uploadFiles($event)">
+    </label>
+
+    @if (imageIds().length) {
+
+      <div class="d-flex flex-wrap gap-2 mb-3">
+
+        @for (image of imageIds(); track image.id) {
+
+          <img
+            [src]="environment.apiRoot + '/upload/' + image.filename"
+            width="120"
+            height="120"
+            style="object-fit: cover; border-radius: 6px;">
+
+        }
+
+      </div>
+
+    }
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="form.invalid">
+
+      Create Product
+
+    </button>
+
+  </form>
+
+  @if (currentUserProducts.hasValue()) {
+
+    <div class="mt-4 row">
+
+      @for (product of currentUserProducts.value().content; track product.id) {
+
+        <div class="col-4 p-4">
+          <div class="card h-100">
+            <div class="card-header">
+              {{ product.name }}
+            </div>
+            <div class="card-body">
+              @if (product.images.length) {
+                <owl-carousel-o [options]="customOptions">
+                  @for (image of product.images; track image.id) {
+                    <ng-template carouselSlide>
+                      <div
+                        class="rounded-4 overflow-hidden"
+                        style="height: 20vh"
+                      >
+                        <img
+                          [src]="environment.apiRoot + '/upload/' + image.filename"
+                          fill
+                          class="object-fit-cover w-100 h-100">
+                      </div>
+                    </ng-template>
+                  }
+                </owl-carousel-o>
+              }
+            </div>
+            <div class="card-footer">
+              <div class="d-flex">
+                <app-img-loc [imgData]="product.seller.profileImg">
+                </app-img-loc>
+                <div class="ms-2">
+                  {{ product.seller.username }}
+                </div>
+              </div>
+              <div class="description text-ellipsis-2lines mb-2">
+                {{ product.description }}
+              </div>
+              <div>
+                Amount : {{ product.price }} AZN
+              </div>
+              <div>
+                In Stock : {{ product.stockQuantity }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</section>

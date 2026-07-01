@@ -1,4 +1,4 @@
-import {Component, input, InputSignal} from '@angular/core';
+import {Component, effect, input, InputSignal, OnChanges, SimpleChanges} from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
 import {environment} from '../../../../environments/environment';
 
@@ -15,4 +15,5 @@ export class ImgLoc {
   imgData: InputSignal<any | undefined> = input()
 
   protected readonly environment = environment;
+
 }
