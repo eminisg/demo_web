@@ -1,7 +1,7 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import {Component, effect, inject} from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {UserService} from '../../user.service';
-import {finalize, of, switchMap} from 'rxjs';
+import {of, switchMap} from 'rxjs';
 import {ImgLoc} from '../img-loc/img-loc';
 import {CoreService} from '../../core.service';
 

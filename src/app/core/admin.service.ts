@@ -3,8 +3,8 @@ import {HttpClient, httpResource} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 
 const URLS = {
-  post_category: `${environment.apiRoot}/category/create-category`,
-  category_list: `${environment.apiRoot}/category/category-list`,
+  post_category: `${environment.apiRoot}/admin/category/create-category`,
+  category_list: `${environment.apiRoot}/admin/category/category-list`,
 }
 
 @Injectable({

@@ -3,9 +3,9 @@ import {HttpClient, httpResource} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 
 const URLS = {
-  post_category: `${environment.apiRoot}/product/create-product`,
-  category_list: `${environment.apiRoot}/product/product-list`,
-  current_user_category_list: `${environment.apiRoot}/product/user-product-list`,
+  post_category: `${environment.apiRoot}/seller/product/create-product`,
+  category_list: `${environment.apiRoot}/seller/product/product-list`,
+  current_user_category_list: `${environment.apiRoot}/seller/product/user-product-list`,
 }
 
 @Injectable({
