@@ -11,7 +11,7 @@
     @let categoryList = categories.value().content;
 
     <div class="my-3">
-      @for (category of categoryList; track category.id) {
+      @for (category of categoryList; track $index) {
         <small class="badge bg-primary me-2">
           {{category.name}}
         </small>

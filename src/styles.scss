@@ -11,3 +11,11 @@
     object-fit: cover;
   }
 }
+
+button {
+  background: transparent;
+  border: none;
+  outline: none;
+  justify-content: center;
+  display: inline-flex;
+}

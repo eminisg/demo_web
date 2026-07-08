@@ -2,6 +2,7 @@ import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AdminService} from '../../../../../../core/admin.service';
 import {HttpResourceRef} from '@angular/common/http';
+import {PageableInterface} from '../../../../../../core/interfaces/pageable.interface';
 
 @Component({
   selector: 'app-categories',
@@ -18,7 +19,7 @@ export class Categories {
   }
 
   private adminService = inject(AdminService);
-  categories: HttpResourceRef<any> = this.adminService.categoryResource;
+  categories: HttpResourceRef<PageableInterface<any> | undefined> = this.adminService.categoryResource;
   form = new FormGroup({
     name: new FormControl('Test Category', [Validators.required]),
   })

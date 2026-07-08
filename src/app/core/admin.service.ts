@@ -1,10 +1,11 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient, httpResource} from '@angular/common/http';
+import {HttpClient, httpResource, HttpResourceRef} from '@angular/common/http';
 import {environment} from '../../environments/environment';
+import {PageableInterface} from './interfaces/pageable.interface';
 
 const URLS = {
-  post_category: `${environment.apiRoot}/admin/category/create-category`,
-  category_list: `${environment.apiRoot}/admin/category/category-list`,
+  post_category: `${environment.apiRoot}/category/create-category`,
+  category_list: `${environment.apiRoot}/category/category-list`,
 }
 
 @Injectable({
@@ -14,7 +15,7 @@ export class AdminService {
 
   private httpClient = inject(HttpClient);
 
-  categoryResource = httpResource(()=> URLS.category_list);
+  categoryResource:HttpResourceRef<PageableInterface<any> | undefined> = httpResource(()=> URLS.category_list);
 
 
   postCategory(body: any) {

@@ -1,24 +1,20 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {
-  FormControl,
-  FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
-import { HttpResourceRef } from '@angular/common/http';
+import {HttpResourceRef} from '@angular/common/http';
 
-import { AdminService } from '../../../../../../core/admin.service';
-import { SellerService } from '../../../../../../core/seller.service';
-import { CoreService } from '../../../../../../core/core.service';
-import { environment } from '../../../../../../../environments/environment';
+import {SellerService} from '../../../../../../core/seller.service';
+import {environment} from '../../../../../../../environments/environment';
 import {CarouselModule, OwlOptions} from 'ngx-owl-carousel-o';
 import {ImgLoc} from '../../../../../../core/components/img-loc/img-loc';
-
-interface UploadedImage {
-  id: number;
-  filename: string;
-}
+import {EMPTY, finalize, Observable, switchMap, take} from 'rxjs';
+import {PageableInterface} from '../../../../../../core/interfaces/pageable.interface';
+import {ProductInterface} from '../../../../../../core/interfaces/product.interface';
+import {NgOptimizedImage} from '@angular/common';
+import {MatDialog} from '@angular/material/dialog';
+import {ProductForm} from '../../../../../../core/components/product-form/product-form';
 
 @Component({
   selector: 'app-product-manager',
@@ -28,45 +24,22 @@ interface UploadedImage {
     ReactiveFormsModule,
     CarouselModule,
     ImgLoc,
+    NgOptimizedImage,
   ],
   templateUrl: './product-manager.html',
   styleUrl: './product-manager.scss',
 })
 export class ProductManager implements OnInit {
-
+  readonly dialog = inject(MatDialog);
   private sellerService = inject(SellerService);
-  private adminService = inject(AdminService);
-  private coreService = inject(CoreService);
-
   protected readonly environment = environment;
 
-  imageIds = signal<UploadedImage[]>([]);
-
-  currentUserProducts: HttpResourceRef<any> = this.sellerService.currentUserProductResource;
-  categories: HttpResourceRef<any> = this.adminService.categoryResource;
-
-  form = new FormGroup({
-    name: new FormControl('My Product Title', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    description: new FormControl('Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the mo', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    price: new FormControl<number | null>(200, Validators.required),
-    stockQuantity: new FormControl<number | null>(1000000, Validators.required),
-    category: new FormControl<number | null>(null, Validators.required),
-
-    imageIds: new FormControl<number[]>([], {
-      nonNullable: true,
-    }),
-  });
+  currentUserProducts: HttpResourceRef<PageableInterface<ProductInterface> | undefined> = this.sellerService.currentUserProductResource;
 
   customOptions: OwlOptions = {
     loop: true,
     autoplay: true,
-    margin:30,
+    margin: 30,
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
@@ -94,48 +67,50 @@ export class ProductManager implements OnInit {
     this.currentUserProducts.reload();
   }
 
-  submitForm(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    this.sellerService.postProduct(this.form.getRawValue()).subscribe({
-      next: () => {
-        this.currentUserProducts.reload();
-      },
-      error: err => {
-        console.error(err);
-      },
-    });
+  submitForm(body: any): Observable<any> {
+    return !body.id ? this.sellerService.postProduct(body) : this.sellerService.putProduct(body, body.id)
   }
 
-  uploadFiles(event: Event): void {
-    const input = event.target as HTMLInputElement;
-
-    if (!input.files?.length) {
-      return;
-    }
-
-    const formData = new FormData();
-
-    Array.from(input.files).forEach(file => {
-      formData.append('files', file);
+  openDialogue(data?: any) {
+    const dialogRef = this.dialog.open(ProductForm, {
+      minWidth: '80vw',
+      data,
     });
 
-    this.coreService.uploadFiles(formData).subscribe({
+    return dialogRef.afterClosed();
+  }
+
+  updateProduct(product?:any) {
+    if (product?.id && product.status !== "DRAFT") {
+      this.sellerService.getById(product.id).pipe(
+        switchMap((product: any) => {
+          return this.openDialogue(product);
+        }),
+        switchMap((updateBody: any) => {
+          return this.submitForm(updateBody);
+        }),
+        finalize(() => {
+          this.currentUserProducts.reload();
+        })
+      ).subscribe();
+    } else {
+      this.openDialogue().pipe(
+        switchMap((createBody: any) => {
+          return this.submitForm(createBody);
+        }),
+        finalize(() => {
+          this.currentUserProducts.reload();
+        })
+      ).subscribe();
+    }
+
+  }
+
+  deleteProduct(id: number) {
+    this.sellerService.deleteProduct(id).subscribe({
       next: (res: any) => {
-        this.imageIds.set(res);
-
-        this.form.patchValue({
-          imageIds: res.map((x: any) => x.id),
-        });
-      },
-      error: err => {
-        console.error(err);
-      },
+        this.currentUserProducts.reload();
+      }
     });
   }
-
-
 }

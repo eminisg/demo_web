@@ -1,109 +1,13 @@
 <section>
+  <button class="btn btn-primary rounded-circle my-3" (click)="updateProduct()">+</button>
 
-  <form
-    [formGroup]="form"
-    (ngSubmit)="submitForm()"
-    class="form d-flex flex-column card-body">
-
-    <label class="mb-3">
-      Product Name
-      <input
-        type="text"
-        class="form-control"
-        formControlName="name">
-    </label>
-
-    <label class="mb-3">
-      Description
-      <textarea
-        class="form-control"
-        rows="5"
-        formControlName="description">
-      </textarea>
-    </label>
-
-    <label class="mb-3">
-      Price
-      <input
-        type="number"
-        class="form-control"
-        formControlName="price">
-    </label>
-
-    <label class="mb-3">
-      Stock Quantity
-      <input
-        type="number"
-        class="form-control"
-        formControlName="stockQuantity">
-    </label>
-
-    @if (categories.hasValue()) {
-
-      <label class="mb-3">
-        Category
-
-        <select
-          class="form-control"
-          formControlName="category">
-          <option [ngValue]="null">Select Category...</option>
-
-          @for (category of categories.value().content; track category.id) {
-            <option [ngValue]="category">
-              {{ category.name }}
-            </option>
-
-          }
-
-        </select>
-
-      </label>
-
-    }
-
-    <label class="mb-3">
-      Images
-      <input
-        type="file"
-        accept="image/*"
-        multiple
-        (change)="uploadFiles($event)">
-    </label>
-
-    @if (imageIds().length) {
-
-      <div class="d-flex flex-wrap gap-2 mb-3">
-
-        @for (image of imageIds(); track image.id) {
-
-          <img
-            [src]="environment.apiRoot + '/upload/' + image.filename"
-            width="120"
-            height="120"
-            style="object-fit: cover; border-radius: 6px;">
-
-        }
-
-      </div>
-
-    }
-
-    <button
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="form.invalid">
-
-      Create Product
-
-    </button>
-
-  </form>
+  @let productList = currentUserProducts.value()?.content;
 
   @if (currentUserProducts.hasValue()) {
 
-    <div class="mt-4 row">
+    <div class="row">
 
-      @for (product of currentUserProducts.value().content; track product.id) {
+      @for (product of productList; track $index) {
 
         <div class="col-4 p-4">
           <div class="card h-100">
@@ -113,16 +17,17 @@
             <div class="card-body">
               @if (product.images.length) {
                 <owl-carousel-o [options]="customOptions">
-                  @for (image of product.images; track image.id) {
+                  @for (image of product.images; track image.id + image.filename) {
                     <ng-template carouselSlide>
                       <div
                         class="rounded-4 overflow-hidden"
                         style="height: 20vh"
                       >
                         <img
-                          [src]="environment.apiRoot + '/upload/' + image.filename"
+                          [priority]="$index < 3"
+                          [ngSrc]="environment.apiRoot + '/upload/' + image.filename"
                           fill
-                          class="object-fit-cover w-100 h-100">
+                          class="object-fit-cover w-100 h-100" alt="product">
                       </div>
                     </ng-template>
                   }
@@ -130,11 +35,21 @@
               }
             </div>
             <div class="card-footer">
-              <div class="d-flex">
-                <app-img-loc [imgData]="product.seller.profileImg">
-                </app-img-loc>
-                <div class="ms-2">
-                  {{ product.seller.username }}
+              <div class="d-flex justify-content-between w-100">
+                <div class="d-flex">
+                  <app-img-loc [imgData]="product.seller.profileImg">
+                  </app-img-loc>
+                  <div class="ms-2">
+                    {{ product.seller.username }}
+                  </div>
+                </div>
+                <div>
+                  <button class="me-2" (click)="updateProduct(product)">
+                    <img src="assets/icons/pen.svg" alt="edit">
+                  </button>
+                  <button>
+                    <img src="assets/icons/trash3.svg" alt="delete" (click)="deleteProduct(product.id)">
+                  </button>
                 </div>
               </div>
               <div class="description text-ellipsis-2lines mb-2">
@@ -151,7 +66,6 @@
         </div>
 
       }
-
     </div>
 
   }
