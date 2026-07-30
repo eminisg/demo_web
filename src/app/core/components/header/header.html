@@ -2,25 +2,20 @@
 
 <header class="p-3 mb-3 border-bottom">
   <div class="d-flex flex-wrap align-items-center justify-content-between ">
-    @let profileImg = userData?.profileImg;
     <div class="d-flex">
-      <app-img-loc [imgData]="profileImg">
-        <input type="file" accept="image/*" class="position-absolute upload-field opacity-0 z-1"
-               (change)="uploadFileProcess($event)">
-      </app-img-loc>
       <div class="flex-column d-flex ms-2">
         <strong>{{ userData?.username }}</strong>
         <i>{{ userData?.email }}</i>
       </div>
     </div>
     <nav class="nav mb-2 justify-content-center align-items-center mb-md-0">
-        <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/profile/seller-dashboard/product">Seller Dashboard
-        </button>
-        <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/profile/admin-dashboard">Admin Dashboard
-        </button>
-      <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/profile/home">Home</button>
-      <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/profile/product">Products</button>
-      <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/profile/about">About</button>
+<!--        <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/profile/seller-dashboard/product">Seller Dashboard-->
+<!--        </button>-->
+<!--        <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/profile/admin-dashboard">Admin Dashboard-->
+<!--        </button>-->
+<!--      <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/profile/home">Home</button>-->
+<!--      <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/profile/product">Products</button>-->
+<!--      <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/profile/about">About</button>-->
     </nav>
 
     <button class="nav-link px-2 link-dark" routerLinkActive="active" routerLink="/auth/sign-in">Logout</button>

@@ -11,13 +11,5 @@ const URLS = {
   providedIn: 'root',
 })
 export class UserService {
-    private httpClient = inject(HttpClient);
-
-   userListResource: HttpResourceRef<PageableInterface<UserInterface> | undefined> = httpResource(() => 'http://localhost:8080/user/user-list');
-   userResource: HttpResourceRef<UserInterface | undefined> = httpResource(() => 'http://localhost:8080/user/current-user');
-
-   updateUser(body: any): Observable<any> {
-     return this.httpClient.put(URLS.put_user ,body);
-   }
-
+   userResource: HttpResourceRef<UserInterface | undefined> = httpResource(() => 'http://localhost:8080/user/current');
 }

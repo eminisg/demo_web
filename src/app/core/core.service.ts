@@ -14,13 +14,4 @@ const URLS = {
 })
 export class CoreService {
   private httpClient = inject(HttpClient);
-
-  uploadFile(formData: FormData) {
-    return this.httpClient.post(URLS.upload, formData);
-  }
-
-  uploadFiles(formData: FormData) {
-    return this.httpClient.post(URLS.uploads, formData);
-  }
-
 }
