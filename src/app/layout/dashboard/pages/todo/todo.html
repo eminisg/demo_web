@@ -1,0 +1,34 @@
+<section>
+  <h1 class="text-center">TODO</h1>
+  @let todos = todoList.value()?.content;
+  <button (click)="openModal()" class="btn btn-primary rounded-circle mb-3">+</button>
+  @if (todoList.hasValue() && todos && todos.length > 0) {
+    <article class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex flex-column gap-3">
+          @for (todo of todos; track todo.id) {
+            <div class="shadow p-3 rounded-4">
+              <div class="d-flex">
+                <div class="">
+                  <h4>{{ todo.title }}</h4>
+                  <p>{{ todo.createDate | date : 'dd.MM.yyyy HH:mm' }}</p>
+                </div>
+                <div class="flex-grow-1 d-flex justify-content-end">
+                  <div>
+                    <button (click)="openModal(todo)">EDIT</button>
+                    <button (click)="deleteTodo(todo.id)">DELETE</button>
+                    <span [ngClass]="todo.status | statusColor" class="text-light px-2 rounded-4">{{ todo.status }}</span>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <b class="m-0">Description:</b>
+              <p>{{ todo.description }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </article>
+  }
+
+</section>
