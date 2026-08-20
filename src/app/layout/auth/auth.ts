@@ -8,6 +8,7 @@ import {RouterOutlet} from '@angular/router';
   ],
   template: `
   <section class="container-sm">
+    <h1>MAIN DEV</h1>
     <router-outlet></router-outlet>
   </section>
   `,
