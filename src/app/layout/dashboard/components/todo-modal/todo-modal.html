@@ -1,0 +1,24 @@
+<article class="card">
+  <form id="todo-form" [formGroup]="form" (ngSubmit)="submit()" class="form flex-column d-flex card-body">
+    <label for="" class="form-label">
+      Title
+      <input formControlName="title" class="form-control" type="text">
+    </label>
+    <label for="" class="form-label">
+      Description
+      <textarea formControlName="description" class="form-control" type="text"></textarea>
+    </label>
+    @if (data?.todo?.id) {
+      <label>
+        <select formControlName="status" class="form-control">
+          @for (status of statusList; track status) {
+            <option [value]="status">{{status}}</option>
+          }
+        </select>
+      </label>
+    }
+  </form>
+  <footer class="card-footer">
+    <button form="todo-form" class="btn btn-outline-secondary w-100" type="submit">CREATE TODO</button>
+  </footer>
+</article>

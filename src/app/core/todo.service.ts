@@ -7,6 +7,8 @@ import {TodoPostRequestInterface, TodoResponseInterface} from './interfaces/todo
 const URLS = {
   todo_list: `${environment.apiRoot}/todo/todo-list`,
   create_todo: `${environment.apiRoot}/todo/create-todo`,
+  update_todo: `${environment.apiRoot}/todo/update-todo`,
+  delete_todo: `${environment.apiRoot}/todo/delete-todo`,
 }
 
 @Injectable({
@@ -20,5 +22,13 @@ export class TodoService {
 
   createTodo(body: TodoPostRequestInterface) {
    return this.httpClient.post(URLS.create_todo, body);
+  }
+
+  updateTodo(body: TodoPostRequestInterface) {
+    return this.httpClient.put(URLS.update_todo, body);
+  }
+
+  deleteTodo(id: number) {
+    return this.httpClient.delete(`${URLS.delete_todo}/${id}`);
   }
 }
